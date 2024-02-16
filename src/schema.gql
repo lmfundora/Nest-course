@@ -1,0 +1,64 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Items {
+  id: String!
+  name: String!
+  quantity: Int!
+  quantityUnits: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deleted: Boolean!
+  userId: ID!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type User {
+  """Example field (placeholder)"""
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deleted: String!
+  email: String!
+  rol: [String!]!
+}
+
+type Query {
+  ListItems: [Items!]!
+  ListOneItem(id: ID!): Items!
+  ListUsers: [User!]!
+  ListOneUser(id: ID!): User!
+}
+
+type Mutation {
+  CreateItem(createItemInput: CreateItemInput!): Items!
+  UpdateOneItem(updateItemInput: UpdateItemInput!): Items!
+  DeleteItem(id: ID!): Items!
+  UpdateUser(updateUserInput: UpdateUserInput!): User!
+  DeleteUser(id: ID!): User!
+}
+
+input CreateItemInput {
+  name: String!
+  quantity: Int!
+  quantityUnits: String
+  userId: ID!
+}
+
+input UpdateItemInput {
+  name: String
+  quantity: Int
+  quantityUnits: String
+  userId: ID
+  id: ID!
+}
+
+input UpdateUserInput {
+  email: String
+  id: String!
+}
