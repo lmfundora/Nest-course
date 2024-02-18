@@ -7,6 +7,7 @@ import { NotFoundException, ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from "src/auth/guards/graph-jwt-auth.guard";
 
 @Resolver(() => Items)
+@UseGuards(GqlAuthGuard)
 export class ItemsResolver {
   constructor(private readonly itemsService: ItemsService) {}
 

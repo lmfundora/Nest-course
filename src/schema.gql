@@ -31,8 +31,14 @@ type User {
 type Query {
   ListItems: [Items!]!
   ListOneItem(id: ID!): Items!
-  ListUsers: [User!]!
+  ListUsers(roles: [ValidRoles!] = []): [User!]!
   ListOneUser(id: ID!): User!
+}
+
+enum ValidRoles {
+  admin
+  user
+  superUser
 }
 
 type Mutation {
