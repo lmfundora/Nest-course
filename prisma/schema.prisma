@@ -34,9 +34,9 @@ model Users {
   rol       String[] @default(["user"])
   password  String
   items     Items[]
-  // user      Users?   @relation("UserLastUpdatedBy", fields: [lastUpdatedBy], references: [id])
-  // lastUpdatedBy String?
-  // updatedUsers    Users[]    @relation("UserLastUpdatedBy")
+  user      Users?   @relation("UserLastUpdatedBy", fields: [lastUpdatedBy], references: [id])
+  lastUpdatedBy String?
+  updatedUsers    Users[]    @relation("UserLastUpdatedBy")
 
   @@index([deleted], type: Hash)
   @@index([email], type: SpGist)

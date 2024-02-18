@@ -20,12 +20,13 @@ scalar DateTime
 
 type User {
   """Example field (placeholder)"""
-  id: String!
+  id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
   deleted: String!
   email: String!
   rol: [String!]!
+  lastUpdatedBy: ID
 }
 
 type Query {
@@ -53,18 +54,19 @@ input CreateItemInput {
   name: String!
   quantity: Int!
   quantityUnits: String
-  userId: ID!
 }
 
 input UpdateItemInput {
   name: String
   quantity: Int
   quantityUnits: String
-  userId: ID
   id: ID!
 }
 
 input UpdateUserInput {
   email: String
+  password: String
   id: String!
+  lastUpdatedBy: ID
+  rol: [String!]
 }

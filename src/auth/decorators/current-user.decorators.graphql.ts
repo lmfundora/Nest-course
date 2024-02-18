@@ -18,7 +18,7 @@ export const CurrentUserGraphql = createParamDecorator(
         'No user inside the request. Make sure that we used the AuthGard',
       );
     }
-
+    
     if(roles.length === 0) return user;
 
     for(const rol of user.rol) {

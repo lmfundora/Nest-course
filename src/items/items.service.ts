@@ -7,47 +7,45 @@ import { Items } from './entities/item.entity';
 export class ItemsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createItemInput: CreateItemInput): Promise<Items> {
+  async create(createItemInput: CreateItemInput, userId: string): Promise<Items> {
     return await this.prisma.items.create({
-      data: createItemInput,
+      data: {
+        ...createItemInput,
+        userId
+      },
     });
   }
 
   async findAll(): Promise<Items[]> {
     return await this.prisma.items.findMany({
-      where:{
-        deleted: false
-      }
+      where: {
+        deleted: false,
+      },
     });
   }
 
   async findOne(id: string): Promise<Items> {
-
     const item = await this.prisma.items.findUnique({
       where: {
-        id: id,
-        deleted: false
+        id,
+        deleted: false,
       },
     });
 
-    if( !item ) throw new NotFoundException('Item not found')
-    
+    if (!item) throw new NotFoundException('Item not found');
+
     return item;
   }
 
   async update(id: string, updateItemInput: UpdateItemInput): Promise<Items> {
-    
+
     const item = this.prisma.items.update({
       where: {
-        id: id,
-        deleted: false
+        id,
+        deleted: false,
       },
-      data: {
-        name: updateItemInput.name,
-        quantity: updateItemInput.quantity,
-        quantityUnits: updateItemInput.quantityUnits
-      }
-    })
+      data: updateItemInput,
+    });
 
     return item;
   }
@@ -55,12 +53,12 @@ export class ItemsService {
   async remove(id: string): Promise<Items> {
     return this.prisma.items.update({
       where: {
-        id: id,
-        deleted: false
+        id,
+        deleted: false,
       },
       data: {
-        deleted: true
-      }
+        deleted: true,
+      },
     });
   }
 }

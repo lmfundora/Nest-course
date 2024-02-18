@@ -40,7 +40,7 @@ export class UsersResolver {
     user: User,
   ): Promise<User> {
     try {
-      return this.usersService.update(updateUserInput.id, updateUserInput);
+      return this.usersService.update(updateUserInput.id, updateUserInput, user.id);
     } catch (error) {
       throw new NotFoundException('User not found.');
     }
@@ -57,7 +57,7 @@ export class UsersResolver {
     user: User,
   ): Promise<User> {
     try {
-      return this.usersService.remove(id);
+      return this.usersService.remove(id, user.id);
     } catch (error) {
       throw new NotFoundException('User not found.');
     }

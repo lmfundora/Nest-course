@@ -3,6 +3,7 @@ import { CreateUserInput, UpdateUserInput } from './dto/inputs';
 import { User } from './entities/user.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ValidRoles } from 'src/auth/enums/valid-roles.enum';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -30,7 +31,7 @@ export class UsersService {
   async findOne(id: string): Promise<User> {
     const user = await this.prisma.users.findUnique({
       where: {
-        id: id,
+        id,
         deleted: false,
       },
     });
@@ -40,19 +41,29 @@ export class UsersService {
     return user;
   }
 
-  async update(id: string, updateUserInput: UpdateUserInput): Promise<User> {
+  async update(
+    id: string,
+    updateUserInput: UpdateUserInput,
+    lastUpdatedBy: string,
+  ): Promise<User> {
+
+    if(updateUserInput.password) updateUserInput.password = bcrypt.hashSync(updateUserInput.password, 10);
+
     const user = await this.prisma.users.update({
       where: {
-        id: id,
+        id,
         deleted: false,
       },
-      data: updateUserInput,
+      data: {
+        ...updateUserInput,
+        lastUpdatedBy
+      },
     });
 
     return user;
   }
 
-  async remove(id: string): Promise<User> {
+  async remove(id: string, lastUpdatedBy: string): Promise<User> {
     const user = await this.prisma.users.update({
       where: {
         id: id,
@@ -60,6 +71,7 @@ export class UsersService {
       },
       data: {
         deleted: true,
+        lastUpdatedBy,
       },
     });
 

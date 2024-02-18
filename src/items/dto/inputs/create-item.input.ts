@@ -20,8 +20,8 @@ export class CreateItemInput {
   @IsOptional()
   quantityUnits?: Item[`quantityUnits`]
 
-  @Field(()=> ID)
-  @IsUUID()
-  @IsNotEmpty()
-  userId: Item[`userId`]
+  // @Field(()=> ID)
+  // @IsUUID()
+  // @IsNotEmpty()
+  // userId: Item[`userId`]
 }
