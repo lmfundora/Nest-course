@@ -10,7 +10,7 @@ type Items {
   createdAt: DateTime!
   updatedAt: DateTime!
   deleted: Boolean!
-  userId: ID!
+  userId: String!
 }
 
 """

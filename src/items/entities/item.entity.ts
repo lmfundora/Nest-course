@@ -24,6 +24,6 @@ export class Items {
   @Field(()=> Boolean)
   deleted: Item[`deleted`]
 
-  @Field(()=> ID)
+  @Field(()=> String)
   userId: Item[`userId`]
 }

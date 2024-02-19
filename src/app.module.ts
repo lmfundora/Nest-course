@@ -7,15 +7,29 @@ import { ItemsModule } from './items/items.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
 
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRootAsync({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      playground: false,
+      imports: [ AuthModule ],
+      inject: [ JwtService ],
+      useFactory: async(jwtService: JwtService) =>({
+        playground: false,
+        autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+        context({req}) {
+          const token = req.headers.authorization?.replace('Bearer ', '');
+          if( !token ) throw new Error('Token needed');
+
+          const payload = jwtService.decode( token );
+          console.log(payload);
+          
+          if( !payload ) throw new Error('Token not valid')
+        }
+      })
     }),
 
     ItemsModule,
