@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateUserInput, UpdateUserInput } from './dto/inputs';
+import { UpdateUserInput } from './dto/inputs';
 import { User } from './entities/user.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ValidRoles } from 'src/auth/enums/valid-roles.enum';
@@ -10,10 +10,13 @@ export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
   async findAll(roles: ValidRoles[]): Promise<User[]> {
-    if (roles.length === 0) {
+    if (roles.length === 0){
       return await this.prisma.users.findMany({
         where: {
           deleted: false,
+        },
+        include: {
+          items: true,
         },
       });
     }
@@ -25,6 +28,9 @@ export class UsersService {
           hasSome: roles,
         },
       },
+      include: {
+        items: true,
+      },
     });
   }
 
@@ -33,6 +39,9 @@ export class UsersService {
       where: {
         id,
         deleted: false,
+      },
+      include: {
+        items: true,
       },
     });
 
@@ -46,8 +55,9 @@ export class UsersService {
     updateUserInput: UpdateUserInput,
     lastUpdatedBy: string,
   ): Promise<User> {
-
-    if(updateUserInput.password) updateUserInput.password = bcrypt.hashSync(updateUserInput.password, 10);
+    if (updateUserInput.password) {
+      updateUserInput.password = bcrypt.hashSync(updateUserInput.password, 10);
+    }
 
     const user = await this.prisma.users.update({
       where: {
@@ -56,7 +66,7 @@ export class UsersService {
       },
       data: {
         ...updateUserInput,
-        lastUpdatedBy
+        lastUpdatedBy,
       },
     });
 

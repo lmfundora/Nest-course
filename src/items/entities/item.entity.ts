@@ -1,5 +1,6 @@
 import { ObjectType, Field, Int, GraphQLISODateTime, ID } from '@nestjs/graphql';
 import { Items as Item } from "@prisma/client";
+import { User } from 'src/users/entities/user.entity';
 
 @ObjectType()
 export class Items {
@@ -24,6 +25,6 @@ export class Items {
   @Field(()=> Boolean)
   deleted: Item[`deleted`]
 
-  @Field(()=> String)
-  userId: Item[`userId`]
+  @Field(()=> User, {nullable:true})
+  user?: User
 }

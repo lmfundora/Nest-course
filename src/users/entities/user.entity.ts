@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int, GraphQLISODateTime, ID } from '@nestjs/graphql';
+import { ObjectType, Field, GraphQLISODateTime, ID } from '@nestjs/graphql';
 import { Items } from 'src/items/entities/item.entity';
 
 @ObjectType()
@@ -18,12 +18,12 @@ export class User {
   @Field(() => String)
   email: string;
 
-  @Field(()=> [String])
-  rol: string[]
+  @Field(() => [String])
+  rol: string[];
 
-  @Field(()=> ID, {nullable: true})
-  lastUpdatedBy?: string
+  @Field(() => ID, { nullable: true })
+  lastUpdatedBy?: string;
 
-  // @Field(()=> Items, {nullable: true})
-  // items: Items
+  @Field(() => [Items], { nullable: true })
+  items?: Items[];
 }

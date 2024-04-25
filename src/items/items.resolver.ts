@@ -28,25 +28,33 @@ export class ItemsResolver {
   }
 
   @Query(() => [Items], { name: 'ListItems' })
-  async findAll(): Promise<Items[]> {
-    return this.itemsService.findAll();
+  async findAll(
+    @CurrentUserGraphql()
+    user: User,
+  ): Promise<Items[]> {
+    return this.itemsService.findAll(user);
   }
 
   @Query(() => Items, { name: 'ListOneItem' })
   async findOne(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
+    @CurrentUserGraphql()
+    user: User,
   ): Promise<Items> {
-    return this.itemsService.findOne(id);
+    return this.itemsService.findOne(id, user);
   }
 
   @Mutation(() => Items, { name: 'UpdateOneItem' })
   async updateItem(
     @Args('updateItemInput') updateItemInput: UpdateItemInput,
+    @CurrentUserGraphql()
+    user: User,
   ): Promise<Items> {
     try {
       return await this.itemsService.update(
         updateItemInput.id,
         updateItemInput,
+        user,
       );
     } catch (error) {
       throw new NotFoundException('Item not found.');
@@ -54,9 +62,13 @@ export class ItemsResolver {
   }
 
   @Mutation(() => Items, { name: 'DeleteItem' })
-  async removeItem(@Args('id', { type: () => ID }) id: string): Promise<Items> {
+  async removeItem(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUserGraphql()
+    user: User,
+  ): Promise<Items> {
     try {
-      return await this.itemsService.remove(id);
+      return await this.itemsService.remove(id, user);
     } catch (error) {
       throw new NotFoundException('Item not found.');
     }

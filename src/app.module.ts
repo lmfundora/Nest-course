@@ -25,7 +25,6 @@ import { JwtService } from '@nestjs/jwt';
           if( !token ) throw new Error('Token needed');
 
           const payload = jwtService.decode( token );
-          console.log(payload);
           
           if( !payload ) throw new Error('Token not valid')
         }
